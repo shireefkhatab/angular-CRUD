@@ -1,0 +1,140 @@
+
+<form #createEmployeesForm="ngForm" (ngSubmit)="saveEmployee()">
+  
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title">Panel title</h3>
+    </div>
+    <div class="panel-body">
+      
+      
+<!-- First Name -->
+        <div class="form-group" 
+              [class.has-error]="firstNameLTRV.invalid && firstNameLTRV.touched"
+              [class.has-success]="firstNameLTRV.valid && firstNameLTRV.touched">
+          <label for="firstName" class="control-label">First Name</label>
+          <input type="text" class="form-control" name="firstName" 
+                  [(ngModel)] = "employee.firstName" #firstNameLTRV=ngModel 
+                  placeholder="First Name" required>
+              <span class="help-block" *ngIf="firstNameLTRV.invalid && firstNameLTRV.touched">
+               First name is required! </span>
+        </div>
+        
+
+<!-- Checkbox -->
+<div class="form-group"
+     [class.has-error] = "(!contactEmailLTRV.value && !contactphoneLTRV.value && contactEmailLTRV.touched)
+                          || (!contactEmailLTRV.value && !contactphoneLTRV.value && contactphoneLTRV.touched)">
+  <label class="control-label">Contact Preference</label>
+  <div class="form-control">
+    <label class="checkbox-inline">
+      <input type="checkbox" name="contact_via_email" 
+             [(ngModel)]="employee.contact_via_email" #contactEmailLTRV ="ngModel" value = "Email"
+              [required]= "!contactphoneLTRV.value">
+              Email
+    </label>
+    <label class="checkbox-inline">
+      <input type="checkbox" name="contact_via_phone" 
+             [(ngModel)]="employee.contact_via_phone" #contactphoneLTRV ="ngModel" value = "Phone"
+             [required]= "!contactEmailLTRV.value">
+              Phone
+    </label>
+  </div>
+  <span class="help-block" *ngIf="(!contactEmailLTRV.value && !contactphoneLTRV.value) &&
+                                  (contactEmailLTRV.touched || contactphoneLTRV.touched)">
+    Contact preference is required! </span>
+</div>
+
+<!-- Email -->
+        <div class="form-group" 
+        [class.has-error]="emailLTRV.invalid && emailLTRV.touched"
+        [class.has-warning]="contactEmailLTRV.value && emailLTRV.pristine" >
+          <label for="email" class="control-label">Email address</label>
+          <input type="email" class="form-control" id="email" name="email" 
+                  [(ngModel)] = "employee.email" #emailLTRV="ngModel" placeholder="Email"
+                  pattern ="^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$"
+                   [required] = "contactEmailLTRV.value" >
+                  <span class="help-block" *ngIf="emailLTRV.errors?.required && emailLTRV.touched">
+                    Email is required! </span>
+                <span class="help-block" *ngIf="emailLTRV.errors?.pattern && emailLTRV.touched">
+                    Email is invalid! </span>
+        </div>
+<!-- Phone -->
+        <div class="form-group"
+          [class.has-error]="phoneLTRV.invalid && phoneLTRV.touched"
+          [class.has-warning]="contactphoneLTRV.value && phoneLTRV.pristine">
+            <label for="phone" class="control-label">Phone Number</label>
+            <input type="number" class="form-control" id="phone" name="phone" 
+                    [(ngModel)] = "employee.phone" #phoneLTRV="ngModel" placeholder="phone"
+                    [required] = "contactphoneLTRV.value">
+            <span class="help-block" *ngIf="phoneLTRV.errors?.required && phoneLTRV.touched">
+              Phone is required! </span>
+          </div>
+
+<!-- Radio -->
+        <div class="form-group" [class.has-error]="genderLTRV.invalid && genderLTRV.touched">
+          <label for="gender" class="control-label"> Gender </label>
+          <div class="form-control">
+            <label class="radio-inline">
+              <input type="radio" name="gender" [(ngModel)]="employee.gender" #genderLTRV="ngModel" value = "male" required>
+              Male
+            </label>
+            <label class="radio-inline">
+              <input type="radio" name="gender" [(ngModel)]="employee.gender" #genderLTRV="ngModel" value = "female" required>
+              Female
+            </label>
+          </div>
+          <span class="help-block" *ngIf="genderLTRV.errors?.required && genderLTRV.touched">
+            Gender is required! </span>
+        </div>
+
+<!-- Select list -->
+        <div class="form-group" [class.has-error] = "departmentLTRV.touched && departmentLTRV.value == 'Select'">
+          <label for="department" class="control-label">Department</label>
+          <select name="department" id="department" class="form-control" [(ngModel)]="employee.department" #departmentLTRV = "ngModel" required>
+            <option *ngFor="let dept of departments" [value]="dept.name" required> {{dept.name}} </option>
+          </select>
+          <span class="help-block" *ngIf="departmentLTRV.touched && departmentLTRV.value == 0">Select department</span>
+        </div>
+<!-- Datepicker -->
+        <div class="form-group">
+          <label for="dob">Date of Birth</label>
+          <input type="text" bsDatepicker id="dob" [bsConfig] = "bsConfig"
+                 name="dob" class="form-control"  [(ngModel)]="employee.dob" placement="top">
+        </div>
+
+        <div  ngModelGroup="passwordGroup" #passwordGroupLTRV="ngModelGroup"
+              [class.has-error]="(passwordLTRV.invalid && passwordLTRV.touched) || 
+                                (cPasswordLTRV.invalid && cPasswordLTRV.touched ||
+                                (cPasswordLTRV.dirty && passwordLTRV.value !== cPasswordLTRV.value))">
+<!-- Password -->
+          <div class="form-group">
+            <label for="password" class="control-label">Password</label>
+            <input class="form-control" type="text" id="password" name="password" [(ngModel)]= "employee.password" #passwordLTRV="ngModel" required>
+            <span class="help-block" *ngIf="passwordLTRV.errors?.required && passwordLTRV.touched"> Password is required!</span>
+          </div>
+
+<!-- cPassword -->
+          <div class="form-group">
+            <label for="cPassword" class="control-label">Password Confirmation</label>
+            <input class="form-control" type="text" id="cPassword" name="cPassword" [(ngModel)]= "employee.cPassword" #cPasswordLTRV="ngModel" required>
+            <span class="help-block" *ngIf="cPasswordLTRV.errors?.required && cPasswordLTRV.touched"> Password confirmation is required!</span>
+            <span class="help-block" *ngIf="!cPasswordLTRV.errors?.required && cPasswordLTRV.dirty && passwordLTRV.value !== cPasswordLTRV.value">
+                        Password is not matching!</span>
+          </div>
+        </div>
+  
+<!-- Photo path -->
+  <div class="form-group">
+    <label for="photoPath"> Photo Path </label>
+    <input type="text" id="photoPath" name="photoPath" class="form-control"  [(ngModel)]="employee.photoPath">
+  </div>
+</div>
+<!-- Submit -->
+    <div class="panel-footer">
+      <button class="btn btn-primary" type="submit" [disabled]="createEmployeesForm.invalid">
+        Save</button>
+    </div>
+  </div>
+
+</form>

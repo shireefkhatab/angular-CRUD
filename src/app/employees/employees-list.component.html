@@ -1,0 +1,78 @@
+
+<div class="panel panel-primary" *ngFor="let employee of employees" 
+      (click)= "viewEmpolyee(employee)">
+  <div class="panel-heading">
+    <h3 class="panel-title"> {{employee.firstName}} </h3>
+  </div>
+  <div class="panel-body">
+
+    <div class="col-xs-10">
+
+      <div class="row vertical-align">
+
+        <div class="col-xs-4">
+          <img class="imageClass" [src]="employee.photoPath" />
+        </div>
+        <div class="col-xs-8">
+
+          <div class="row">
+              <div class="col-xs-4">
+                Email
+              </div>
+              <div class="col-xs-8">
+                : {{employee.email}}
+              </div>
+            </div>
+
+          <div class="row">
+              <div class="col-xs-4">
+                Phone
+              </div>
+              <div class="col-xs-8">
+                : {{employee.phone}}
+              </div>
+            </div>
+
+          <div class="row">
+            <div class="col-xs-4">
+              Gender
+            </div>
+            <div class="col-xs-8">
+              : {{employee.gender}}
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col-xs-4">
+                Department
+              </div>
+              <div class="col-xs-8">
+                : {{employee.department}}
+              </div>
+            </div>
+
+          <div class="row">
+            <div class="col-xs-4">
+              Date of Birth
+            </div>
+            <div class="col-xs-8">
+              : {{employee.dob | date}}
+            </div>
+          </div>
+
+          <div class="row">
+              <div class="col-xs-4">
+                Contact preference
+              </div>
+              <div class="col-xs-8">
+                : {{employee.contact_via_email? 'Email' : ''}} 
+                  {{employee.contact_via_email && employee.contact_via_phone? ' - ' : ''}}
+                 {{employee.contact_via_phone? 'Phone' : ''}}
+              </div>
+            </div>           
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
