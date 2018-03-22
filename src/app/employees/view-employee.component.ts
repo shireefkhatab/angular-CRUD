@@ -1,19 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { Employee } from '../models/employee.model';
-import { EmployeesDbService } from '../employees-db.service';
+
 @Component({
   selector: 'app-view-employee',
   templateUrl: './view-employee.component.html',
   styleUrls: ['./view-employee.component.css']
 })
-export class ViewEmployeeComponent implements OnInit {
+export class ViewEmployeeComponent implements OnInit, OnChanges {
 
-  employee: Employee;
-  constructor( private _employeesDbService: EmployeesDbService) { }
+  @Input() employee: Employee;
+  prevEmployee: Employee;
+  currentEmployee: Employee;
 
-  ngOnInit() {
-    this.employee = this._employeesDbService.employee;
+  constructor() { }
+
+  ngOnChanges(changes: SimpleChanges){
+    
+    this.prevEmployee = changes.employee.previousValue? changes.employee.previousValue.firstName: 'Null';
+    this.currentEmployee = changes.employee.currentValue.firstName;
   }
 
-  
+
+  ngOnInit() {
+
+  }
+
+
 }

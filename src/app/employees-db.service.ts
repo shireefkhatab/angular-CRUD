@@ -48,8 +48,6 @@ export class EmployeesDbService {
       photoPath: '../../assets/images/john.png'
     }
   ];
-
-  employee: Employee;
   
   getEmployees(){
     return this.employees;
@@ -58,7 +56,4 @@ export class EmployeesDbService {
     this.employees.push(employee);
   }
 
-  shareDate(emp){
-    this.employee = emp;
-  }
 }

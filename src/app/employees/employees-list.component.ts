@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
 import { Employee } from '../models/employee.model';
 import { EmployeesDbService } from '../employees-db.service';
 
@@ -11,17 +10,29 @@ import { EmployeesDbService } from '../employees-db.service';
 export class EmployeesListComponent implements OnInit {
   employees: Employee[];
   
-  constructor(private _employeeSerive: EmployeesDbService,
-              private _router: Router) { }
-
+  constructor(private _employeeSerive: EmployeesDbService) { }
+  selectedEmployee: Employee;
+  index = 0;
   ngOnInit() {
      this.employees = this._employeeSerive.getEmployees();
+     this.selectedEmployee = this.employees[this.index];
   }
   
-  viewEmpolyee(employee){
-    // pass employee data
-    this._employeeSerive.shareDate(employee)
-    // route to view-employee
-    this._router.navigate(['view']);
+  viewPrev(){
+    this.index--;
+    if (this.index < 0){
+      this.index = 2;
+    }
+
+    this.selectedEmployee = this.employees[this.index];
+  }
+
+  viewNext(){
+    this.index++;
+    if (this.index > 2){
+      this.index = 0;
+    }
+    
+    this.selectedEmployee = this.employees[this.index];
   }
 }
